@@ -64,5 +64,25 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-zSpace is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://forgeglobal.com/zspace_stock/
+zSpace, Inc. (Nasdaq: ZSPC) builds AR/VR learning technology for K-12, career and technical
+education, and higher education — glasses-free 3D laptops and all-in-one displays paired with a
+stylus and head tracking, plus a catalog of curriculum-aligned applications, models and
+simulations.
+
+Its developer surface is centered on the **zSpace Core SDK**, a native C API (documented as
+`native_sdk_4.0`) with a Unity plugin, exposing fourteen modules for displays, stereo buffers and
+viewports, coordinate spaces, the stereo frustum, tracker devices and targets, buttons, LEDs,
+vibration and tap. A developer portal at `developer.zspace.com` fronts an authenticated web API at
+`https://api.zspace.com/v2` and a Keycloak OpenID Connect provider at `https://auth.zspace.com`.
+
+**No machine-readable API contract is publicly retrievable.** A Swagger UI is mounted at
+`https://api.zspace.com/v2/api/docs`, but it returns HTTP 302 into the Keycloak authorization
+endpoint. The machine-readable documents zSpace does serve are its OpenID Connect discovery
+metadata and JWKS, plus a publicly listable release-notes bucket at `updates.zspace.com` whose
+newest object dates from 2019.
+
+- Website: https://zspace.com/
+- Developer portal: https://developer.zspace.com/
+- SDK reference: https://developer.zspace.com/assets/sdk-manual/index.html
+- Developer community: https://dev-community.zspace.com/
+- GitHub: https://github.com/zspace

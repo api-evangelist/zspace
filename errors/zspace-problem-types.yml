@@ -1,0 +1,69 @@
+generated: '2026-09-05'
+method: probed
+source: >-
+  Live unauthenticated responses observed from https://api.zspace.com/v2 on 2026-09-05.
+  No OpenAPI exists to derive 4xx/5xx responses from, and zSpace publishes no error
+  reference page, so this catalog records only envelopes that were actually returned.
+format: nestjs-exception-filter
+media_type: application/json
+rfc9457: false
+rfc9457_note: >-
+  Responses are NOT application/problem+json and carry no type/title/detail/instance
+  members. The envelope is the default NestJS HttpException shape.
+envelope:
+  shape: '{"message": <string|array>, "error": <string>, "statusCode": <integer>}'
+  fields:
+  - name: statusCode
+    type: integer
+    description: HTTP status code, repeated in the body.
+  - name: error
+    type: string
+    description: Reason phrase, e.g. "Not Found".
+  - name: message
+    type: string
+    description: Human-readable message; may be an array on validation failures.
+  variant:
+    shape: '{"statusCode": <integer>, "message": <string>}'
+    note: >-
+      Route handlers that throw their own NotFoundException omit the "error" member. Two
+      different error shapes are therefore returned from the same API.
+problem_types:
+- id: route-not-found
+  status: 404
+  title: Route not found
+  observed_body: '{"message":"Cannot GET /openapi.json","error":"Not Found","statusCode":404}'
+  observed_at: https://api.zspace.com/v2/openapi.json
+  remediation: >-
+    The path is not mounted. The framework echoes the method and path, which makes an
+    unmounted route distinguishable from a resource miss.
+- id: resource-not-found
+  status: 404
+  title: Resource not found
+  observed_body: '{"statusCode":404,"message":"No invite found"}'
+  observed_at: https://api.zspace.com/v2/devportal/getInviteEmail/test
+  remediation: >-
+    The route exists and the handler ran; the identifier did not resolve. Note this
+    variant omits the "error" member present in the framework 404.
+- id: missing-session-cookie
+  status: 200
+  title: Not authenticated
+  observed_body: '{"status":"auth-error","loggedin":"false","msg":"Missing cookie"}'
+  observed_at: https://api.zspace.com/v2/auth/sig
+  remediation: >-
+    Obtain a session via the login flow. NOTE: this authentication failure is returned
+    with HTTP 200 and a third, entirely different envelope ("status"/"loggedin"/"msg"),
+    booleans encoded as strings. A client cannot detect this failure from the status code.
+- id: legacy-404
+  status: 404
+  title: CodeIgniter 404 (v1 host root)
+  observed_body: 'text/html "404 Page Not Found"'
+  observed_at: https://api.zspace.com/
+  remediation: >-
+    Paths outside /v2 fall through to a legacy CodeIgniter application that returns an
+    HTML error page rather than JSON.
+gaps:
+- >-
+  Three incompatible error envelopes are served from one API host, and one of them
+  reports an authentication failure with HTTP 200.
+- No published error reference, no error code registry, no stable machine-readable error identifiers.
+- No RFC 9457 problem+json.

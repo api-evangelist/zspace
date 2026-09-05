@@ -1,0 +1,181 @@
+generated: '2026-09-05'
+method: probed
+source: >-
+  Direct HTTP probes of every host named in apis.yml, in the developer portal's own
+  published runtime configuration (https://developer.zspace.com/assets/cfg/config.json),
+  and in the OAuth redirect chain from https://api.zspace.com/v2/api/docs.
+note: >-
+  zspace.com, developer.zspace.com and login.zspace.com are client-side Angular
+  applications whose origin answers HTTP 200 with the same SPA shell for EVERY path,
+  including nonsense paths. Every /.well-known/* 200 recorded on those three hosts is a
+  soft-404 HTML shell, NOT a served document, and is marked served: false. The only real
+  discovery documents zSpace publishes are the Keycloak OpenID Connect metadata and JWKS
+  on auth.zspace.com (production) and auth.devqastage.zspace.com, which are served from
+  the realm path rather than the host root.
+hosts:
+- host: auth.zspace.com
+  role: Keycloak OpenID Connect identity provider (production)
+  documents:
+  - path: /auth/realms/master/.well-known/openid-configuration
+    status: 200
+    content_type: application/json
+    served: true
+    file: zspace-openid-configuration.json
+  - path: /auth/realms/master/protocol/openid-connect/certs
+    status: 200
+    content_type: application/json
+    served: true
+    file: zspace-jwks.json
+  - path: /.well-known/openid-configuration
+    status: 404
+    served: false
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    served: false
+  - path: /.well-known/security.txt
+    status: 404
+    served: false
+- host: auth.devqastage.zspace.com
+  role: >-
+    Keycloak realm named as the authorization server in the live redirect from
+    https://api.zspace.com/v2/api/docs
+  documents:
+  - path: /auth/realms/master/.well-known/openid-configuration
+    status: 200
+    content_type: application/json
+    served: true
+    file: zspace-devqastage-openid-configuration.json
+- host: api.zspace.com
+  role: Developer portal web API (NestJS/Express), robots.txt Disallow -> /
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    served: false
+  - path: /.well-known/openid-configuration
+    status: 404
+    served: false
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    served: false
+  - path: /.well-known/api-catalog
+    status: 404
+    served: false
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    served: false
+  - path: /.well-known/agent-card.json
+    status: 404
+    served: false
+  - path: /.well-known/agent.json
+    status: 404
+    served: false
+- host: zspace.com
+  role: Marketing site (Angular SPA, catch-all 200)
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/html
+    served: false
+    note: SPA shell, not a document
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: text/html
+    served: false
+    note: SPA shell, not a document
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: text/html
+    served: false
+    note: SPA shell, not a document
+  - path: /.well-known/api-catalog
+    status: 200
+    content_type: text/html
+    served: false
+    note: SPA shell, not a document
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    content_type: text/html
+    served: false
+    note: SPA shell, not a document
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: text/html
+    served: false
+    note: SPA shell, not a document
+  - path: /.well-known/agent.json
+    status: 200
+    content_type: text/html
+    served: false
+    note: SPA shell, not a document
+- host: developer.zspace.com
+  role: Developer portal (Angular SPA, catch-all 200)
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/html
+    served: false
+    note: SPA shell, not a document
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: text/html
+    served: false
+    note: SPA shell, not a document
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: text/html
+    served: false
+    note: SPA shell, not a document
+  - path: /.well-known/api-catalog
+    status: 200
+    content_type: text/html
+    served: false
+    note: SPA shell, not a document
+- host: login.zspace.com
+  role: Login application (Angular SPA, catch-all 200)
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: text/html
+    served: false
+    note: SPA shell, not a document
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: text/html
+    served: false
+    note: SPA shell, not a document
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: text/html
+    served: false
+    note: SPA shell, not a document
+- host: dev-community.zspace.com
+  role: Discourse developer forum
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    served: false
+  - path: /.well-known/openid-configuration
+    status: 404
+    served: false
+  - path: /.well-known/agent-card.json
+    status: 404
+    served: false
+- host: cdn.zspace.com
+  role: Asset CDN (S3)
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+    served: false
+  - path: /.well-known/agent-card.json
+    status: 403
+    served: false
+agent_card:
+  found: false
+  note: >-
+    /.well-known/agent-card.json and /.well-known/agent.json were probed on every host.
+    zspace.com, developer.zspace.com and login.zspace.com returned 200 with the SPA shell
+    (the dominant false positive; rejected), and api.zspace.com, dev-community.zspace.com
+    returned 404. No A2A agent card is published, so no a2a/ artifact and no AgentCard
+    pointer were written.
+security_txt:
+  found: false

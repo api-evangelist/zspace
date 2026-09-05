@@ -1,0 +1,40 @@
+generated: '2026-09-05'
+method: probed
+source: >-
+  Searches of the zSpace developer surface, the verified github.com/zspace organization,
+  npm and PyPI, plus direct probes of every zSpace host for an MCP endpoint.
+status: none
+note: >-
+  zSpace ships no MCP server, hosted or local. No candidate tool list was derived either,
+  because there is no public OpenAPI to derive one from — the only Swagger mount,
+  https://api.zspace.com/v2/api/docs, is behind the Keycloak authorization endpoint. No
+  MCPServer pointer is wired in apis.yml, because asserting one would claim an agent
+  surface the provider does not serve.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: probed
+searched:
+- target: hosted MCP endpoint
+  probed_hosts:
+  - zspace.com
+  - developer.zspace.com
+  - api.zspace.com
+  - login.zspace.com
+  - auth.zspace.com
+  result: >-
+    No /mcp, /sse or MCP-shaped route found. api.zspace.com/v2 returns the NestJS
+    not-found envelope for unmounted paths; the Angular hosts return an SPA shell for
+    every path and were rejected as false positives.
+- target: npm / PyPI package
+  result: >-
+    No @zspace/* npm scope and no zspace PyPI project. See packages/zspace-packages.yml.
+- target: github.com/zspace
+  result: >-
+    13 public repositories, all firmware or vendored upstream forks. No MCP server.
+- target: llms.txt tool list
+  result: No llms.txt is published on any zSpace host.
+tools: []

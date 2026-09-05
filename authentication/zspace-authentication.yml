@@ -1,0 +1,111 @@
+generated: '2026-09-05'
+method: probed
+source: https://auth.zspace.com/auth/realms/master/.well-known/openid-configuration
+note: >-
+  Derived from the production Keycloak OpenID Connect discovery document, fetched
+  anonymously. No OpenAPI securitySchemes block exists to derive from — the zSpace
+  developer API publishes no public contract — so this profile records the identity
+  provider's own machine-readable metadata plus the auth behaviour observed on live
+  unauthenticated calls to https://api.zspace.com/v2.
+provider:
+  type: keycloak
+  issuer: https://auth.zspace.com/auth/realms/master
+  realm: master
+  discovery: https://auth.zspace.com/auth/realms/master/.well-known/openid-configuration
+  jwks_uri: https://auth.zspace.com/auth/realms/master/protocol/openid-connect/certs
+  non_production_realm:
+    issuer: https://auth.devqastage.zspace.com/auth/realms/master
+    note: >-
+      The live production redirect from https://api.zspace.com/v2/api/docs sends the user
+      to auth.devqastage.zspace.com with client_id=tester, not to auth.zspace.com. Recorded
+      as observed; both realms answer their discovery document anonymously.
+schemes:
+- id: openIdConnect
+  type: openIdConnect
+  in: header
+  scheme: bearer
+  openIdConnectUrl: https://auth.zspace.com/auth/realms/master/.well-known/openid-configuration
+  description: >-
+    OpenID Connect via Keycloak. Bearer access tokens are issued from the realm token
+    endpoint and validated against the published JWKS.
+- id: oauth2
+  type: oauth2
+  flows:
+    authorizationCode:
+      authorizationUrl: https://auth.zspace.com/auth/realms/master/protocol/openid-connect/auth
+      tokenUrl: https://auth.zspace.com/auth/realms/master/protocol/openid-connect/token
+      refreshUrl: https://auth.zspace.com/auth/realms/master/protocol/openid-connect/token
+      scopes_ref: scopes/zspace-scopes.yml
+    clientCredentials:
+      tokenUrl: https://auth.zspace.com/auth/realms/master/protocol/openid-connect/token
+    deviceCode:
+      deviceAuthorizationUrl: https://auth.zspace.com/auth/realms/master/protocol/openid-connect/auth/device
+    password:
+      tokenUrl: https://auth.zspace.com/auth/realms/master/protocol/openid-connect/token
+      note: >-
+        Resource-owner password grant is advertised in grant_types_supported. Recorded as
+        published, not recommended.
+- id: session_cookie
+  type: apiKey
+  in: cookie
+  description: >-
+    The developer portal API itself is cookie-session based. An unauthenticated
+    GET https://api.zspace.com/v2/auth/sig returns
+    {"status":"auth-error","loggedin":"false","msg":"Missing cookie"} (HTTP 200),
+    and GET https://api.zspace.com/v2/social/get_csrf issues a CSRF token
+    ({"csrf":"..."}) for the login flow.
+  observed:
+  - url: https://api.zspace.com/v2/auth/sig
+    status: 200
+  - url: https://api.zspace.com/v2/social/get_csrf
+    status: 200
+endpoints:
+  authorization: https://auth.zspace.com/auth/realms/master/protocol/openid-connect/auth
+  token: https://auth.zspace.com/auth/realms/master/protocol/openid-connect/token
+  userinfo: https://auth.zspace.com/auth/realms/master/protocol/openid-connect/userinfo
+  introspection: https://auth.zspace.com/auth/realms/master/protocol/openid-connect/token/introspect
+  revocation: https://auth.zspace.com/auth/realms/master/protocol/openid-connect/revoke
+  end_session: https://auth.zspace.com/auth/realms/master/protocol/openid-connect/logout
+  registration: https://auth.zspace.com/auth/realms/master/clients-registrations/openid-connect
+  pushed_authorization_request: https://auth.zspace.com/auth/realms/master/protocol/openid-connect/ext/par/request
+  device_authorization: https://auth.zspace.com/auth/realms/master/protocol/openid-connect/auth/device
+  backchannel_authentication: https://auth.zspace.com/auth/realms/master/protocol/openid-connect/ext/ciba/auth
+grant_types_supported:
+- authorization_code
+- implicit
+- refresh_token
+- password
+- client_credentials
+- urn:ietf:params:oauth:grant-type:device_code
+- urn:openid:params:grant-type:ciba
+token_endpoint_auth_methods_supported:
+- private_key_jwt
+- client_secret_basic
+- client_secret_post
+- tls_client_auth
+- client_secret_jwt
+code_challenge_methods_supported:
+- plain
+- S256
+claims_supported:
+- aud
+- sub
+- iss
+- auth_time
+- name
+- given_name
+- family_name
+- preferred_username
+- email
+- acr
+mutual_tls:
+  supported: true
+  evidence: >-
+    tls_client_auth in token_endpoint_auth_methods_supported and
+    tls_client_certificate_bound_access_tokens in the discovery document.
+gaps:
+- >-
+  No public API reference documents this authentication model. The Swagger UI at
+  https://api.zspace.com/v2/api/docs exists but 302s into the Keycloak authorization
+  endpoint, so an integrator cannot read the contract the tokens are for.
+- No security.txt, no documented API key programme, no public token-issuance instructions.

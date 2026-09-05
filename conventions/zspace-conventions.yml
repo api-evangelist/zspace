@@ -1,0 +1,128 @@
+generated: '2026-09-05'
+method: probed
+source: >-
+  Live HTTP probes of https://api.zspace.com/v2 and the developer portal application
+  bundle (https://developer.zspace.com/main.41f9788b70a945e7.js and
+  https://developer.zspace.com/assets/cfg/config.json) on 2026-09-05.
+note: >-
+  zSpace publishes no API reference for its web API, so every convention below was
+  observed on the wire or read from the provider's own shipped client code. Nothing here
+  is inferred from a spec, because no spec is published.
+authentication:
+  style: >-
+    Cookie session for the portal API, backed by Keycloak OpenID Connect. See
+    authentication/zspace-authentication.yml.
+  bearer: OIDC access tokens issued by https://auth.zspace.com/auth/realms/master
+  csrf:
+    required: true
+    acquisition: GET /v2/social/get_csrf returns {"csrf":"<token>"}
+    observed_status: 200
+versioning:
+  style: path
+  current: v2
+  base_url: https://api.zspace.com/v2
+  evidence: >-
+    apiUrl and apiUrlV2 are both declared in
+    https://developer.zspace.com/assets/cfg/config.json. Unversioned paths fall through to
+    a legacy CodeIgniter application on the same host.
+  legacy: >-
+    https://api.zspace.com/ (no /v2 prefix) serves a CodeIgniter 404 page, so v1 and v2
+    are two different applications behind one hostname.
+route_groups:
+  note: >-
+    Read from the developer portal's own bundle, where each group is a constant appended
+    to the v2 base. These are real first-party paths, not a guessed surface, but no
+    operation list is published for any of them.
+  groups:
+  - prefix: /v2/auth/
+    observed: 'GET /v2/auth/sig -> 200'
+  - prefix: /v2/social/
+    observed: 'GET /v2/social/get_csrf -> 200'
+  - prefix: /v2/devportal/
+    observed: 'GET /v2/devportal/getInviteEmail/{token} -> 404 {"statusCode":404,"message":"No invite found"}'
+  - prefix: /v2/cognito/
+    observed: 'login, signup, confirm, reset, sendreset (POST; not exercised)'
+  - prefix: /v2/gateway/
+    observed: 'preLoginCsrf (POST; GET returns 404)'
+error_envelope:
+  ref: errors/zspace-problem-types.yml
+  summary: >-
+    NestJS default {"message","error","statusCode"}, plus a handler variant without
+    "error", plus a 200-with-auth-error envelope. Not RFC 9457.
+pagination:
+  style: unknown
+  signal: >-
+    access-control-expose-headers advertises X-Total-Count, which is the conventional
+    total-count header for a header-based pagination scheme. No pagination parameters are
+    documented and no collection endpoint is anonymously reachable to confirm.
+  headers:
+  - X-Total-Count
+request_id_tracing:
+  supported: likely
+  header: X-Request-ID
+  evidence: >-
+    access-control-expose-headers on https://api.zspace.com/v2/social/get_csrf lists
+    X-Request-ID, so the API is designed to surface a correlation id to browser clients.
+    The header was not present on the anonymous responses observed.
+rate_limit_signaling:
+  ref: rate-limits/zspace-rate-limits.yml
+  headers_observed: []
+  note: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After header was returned on any observed
+    response.
+cors:
+  credentials: true
+  vary: Origin
+  expose_headers:
+  - X-Request-ID
+  - X-Total-Count
+  - Set-Cookie
+field_expansion:
+  supported: unknown
+  note: Not documented and not observable without credentials.
+metadata:
+  supported: unknown
+idempotency:
+  coverage: none
+  mechanism: null
+  header: null
+  scope: []
+  evidence: >-
+    No Idempotency-Key header, no idempotency documentation, and no request-replay
+    guidance exists anywhere on the zSpace developer surface. The mutating operations
+    visible in the portal bundle (cognito/signup, cognito/reset, cognito/sendreset,
+    cognito/confirm) carry no replay protection that a client can invoke.
+  note: >-
+    Recorded as none, not unknown: the absence was probed for across the docs, the
+    published client bundle and the live response headers.
+reversibility:
+  grade: undocumented
+  applicable: true
+  note: >-
+    The developer API has a write surface (account signup, password reset, developer
+    invitations) but zSpace publishes no reference for it, so no reversal operation and
+    no reversal window can be cited. NOT recorded as na — the API is not read-only — and
+    NOT recorded as documented, because no reversal path is published. An agent acting on
+    this API cannot determine whether any action it takes can be undone.
+  write_surfaces:
+  - surface: /v2/cognito/signup
+    reversal_operation: null
+    window: null
+    docs: null
+  - surface: /v2/cognito/reset
+    reversal_operation: null
+    window: null
+    docs: null
+  - surface: /v2/devportal/ invitations
+    reversal_operation: null
+    window: null
+    docs: null
+dry_run_mode:
+  supported: false
+  note: No sandbox, test mode, or dry-run parameter is published. See gaps.
+gaps:
+- No public API reference or machine-readable contract for the v2 web API.
+- Three incompatible error envelopes; one authentication failure returned with HTTP 200.
+- No idempotency mechanism.
+- No documented reversal path or window for any write.
+- No rate-limit headers.

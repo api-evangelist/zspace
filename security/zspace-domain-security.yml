@@ -1,0 +1,26 @@
+generated: '2026-09-05'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: zspace.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 11 09:29:55 2026 GMT
+  hsts: false
+- host: developer.zspace.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 11 09:29:55 2026 GMT
+  hsts: false
+- host: api.zspace.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 11 09:29:55 2026 GMT
+  hsts: null
+domains:
+- domain: zspace.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: quarantine

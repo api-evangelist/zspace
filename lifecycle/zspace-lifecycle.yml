@@ -1,0 +1,69 @@
+generated: '2026-09-05'
+method: probed
+source: >-
+  Live probes of api.zspace.com, developer.zspace.com, status.zspace.com and
+  zspace.statuspage.io, plus https://s3.amazonaws.com/updates.zspace.com/relnotes/
+versioning:
+  scheme: path-prefix
+  current: v2
+  base_url: https://api.zspace.com/v2
+  evidence: >-
+    apiUrl / apiUrlV2 declared in https://developer.zspace.com/assets/cfg/config.json
+    (HTTP 200).
+  previous:
+    version: v1
+    state: still-serving
+    note: >-
+      https://api.zspace.com/ (unprefixed) is a separate legacy CodeIgniter application
+      that still answers. No migration guide, sunset date, or deprecation notice is
+      published for it.
+deprecation_policy:
+  published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  evidence: >-
+    No deprecation or versioning policy page exists on zspace.com or
+    developer.zspace.com, and no Sunset or Deprecation response header was returned by any
+    observed call to https://api.zspace.com/v2.
+status_page:
+  published: false
+  probed:
+  - url: https://status.zspace.com/
+    status: 000
+    note: Host does not resolve.
+  - url: https://zspace.statuspage.io/
+    status: 200
+    note: >-
+      NOT a zSpace status page. The hostname is unclaimed and serves Atlassian's own
+      Statuspage marketing page (title "Real-Time Incident Communication with Statuspage
+      | Atlassian"); /api/v2/status.json redirects to www.statuspage.io. Recorded as a
+      miss so it is not mistaken for a served status surface.
+  - url: https://zspace.status.io/
+    status: 000
+sla:
+  published: false
+  note: No public SLA or uptime commitment for the developer API.
+release_notes:
+  published: true
+  ref: changelog/zspace-changelog.yml
+  url: https://s3.amazonaws.com/updates.zspace.com/relnotes/
+  last_updated: '2019-05-14'
+deprecated_operations: []
+deprecated_operations_note: >-
+  Cannot be derived: no OpenAPI is published, so no operation carries a deprecated flag.
+support:
+  channels:
+  - type: HelpCenter
+    url: https://support.zspace.com/s/
+    status: 200
+    note: Salesforce Experience Cloud; JS-rendered, article content not machine-readable.
+  - type: Community
+    url: https://dev-community.zspace.com/
+    status: 200
+    note: Discourse developer forum; server-rendered and crawlable.
+gaps:
+- No status page.
+- No deprecation policy and no Sunset/Deprecation headers.
+- No SLA.
+- A legacy v1 application is still served with no announced end of life.

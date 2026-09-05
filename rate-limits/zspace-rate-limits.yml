@@ -1,0 +1,45 @@
+generated: '2026-09-05'
+method: probed
+source: >-
+  Response headers observed on live unauthenticated calls to https://api.zspace.com/v2 on
+  2026-09-05, plus a documentation search across zspace.com, developer.zspace.com and
+  support.zspace.com.
+limit_count: 0
+note: >-
+  zSpace documents no rate limits and returns no rate-limit headers. An agent or client
+  has no runtime signal for remaining quota or backoff.
+limits: []
+response_headers:
+  rate_limit_headers_present: false
+  observed:
+  - url: https://api.zspace.com/v2/social/get_csrf
+    status: 200
+    headers:
+    - x-powered-by: Express
+    - vary: Origin
+    - access-control-allow-credentials: 'true'
+    - access-control-expose-headers: X-Request-ID,X-Total-Count,Set-Cookie
+    - content-type: application/json; charset=utf-8
+    - etag: weak
+    rate_limit_headers: []
+  searched_for:
+  - X-RateLimit-Limit
+  - X-RateLimit-Remaining
+  - X-RateLimit-Reset
+  - RateLimit-Limit
+  - RateLimit-Remaining
+  - RateLimit-Reset
+  - RateLimit-Policy
+  - Retry-After
+  exhaustion_status_code: unknown
+  note: >-
+    No 429 was induced; probing was kept to a handful of requests. robots.txt on
+    api.zspace.com is Disallow: /, so the host was probed only at the discovery paths this
+    pipeline requires and not crawled.
+caching:
+  etag: true
+  note: Weak ETags are returned, so conditional requests are supported.
+gaps:
+- No published rate limits.
+- No RateLimit-* or Retry-After headers.
+- No documented 429 behaviour or backoff guidance.

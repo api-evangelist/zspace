@@ -1,0 +1,124 @@
+generated: '2026-09-05'
+method: searched
+source: >-
+  https://s3.amazonaws.com/updates.zspace.com/relnotes/ (public S3 listing, HTTP 200) and
+  the per-product releasenotes.html documents under it.
+note: >-
+  zSpace publishes product release notes from a publicly listable first-party S3 bucket,
+  updates.zspace.com. It is not linked as a changelog from the developer portal, but it is
+  real, first-party, and enumerable: 30 product trees and 39 release-notes documents.
+scheme: per-product release notes (HTML), semantic-ish versioning (MAJOR.MINOR.PATCH)
+index: https://s3.amazonaws.com/updates.zspace.com/?list-type=2&prefix=relnotes/
+index_status: 200
+product_tree_count: 30
+document_count: 39
+staleness:
+  newest_document: '2019-05-14'
+  newest_document_url: https://s3.amazonaws.com/updates.zspace.com/relnotes/studio-content/releasenotes.html
+  finding: >-
+    The newest object anywhere under relnotes/ was last modified 2019-05-14. The public
+    release-notes surface has not been updated in roughly seven years, across every one of
+    the 30 products. Current release information appears to have moved to
+    support.zspace.com and the zSpace App Manager, neither of which is machine-readable:
+    support.zspace.com is a Salesforce Experience Cloud site that returns an identical
+    479,865-byte SPA shell for every article URL.
+entries:
+- product: zView
+  version: 4.6.0
+  date: null
+  url: https://s3.amazonaws.com/updates.zspace.com/relnotes/zview/releasenotes.html
+  breaking: false
+  type: fixes
+  highlights:
+  - No log files for zView
+  - Update zView to latest version of LimeLM
+- product: zView
+  version: 4.5.1
+  date: null
+  url: https://s3.amazonaws.com/updates.zspace.com/relnotes/zview/releasenotes.html
+  breaking: false
+  type: updates
+  highlights:
+  - Adding Turkish to available languages dropdown
+  - Fixed formatting issue with Chinese localization files
+- product: zView
+  version: 4.5.0
+  date: null
+  url: https://s3.amazonaws.com/updates.zspace.com/relnotes/zview/releasenotes.html
+  breaking: false
+  type: updates
+  highlights:
+  - Spanish localization added
+  - Native full-screen behavior restored
+  - Fixed zView not saving calibration settings in some environments
+- product: zView
+  version: 4.1.0
+  date: null
+  url: https://s3.amazonaws.com/updates.zspace.com/relnotes/zview/releasenotes.html
+  breaking: false
+  type: updates
+  highlights:
+  - Fullscreen option disabled; F11 now maximizes the zView window
+- product: zSpace SDK and Unity Plugin
+  version: 4.0.0
+  date: '2016-03-25'
+  url: https://s3.amazonaws.com/updates.zspace.com/relnotes/sdk/4.0.0/releasenotes.html
+  breaking: true
+  type: major
+  highlights:
+  - New native SDK and C API
+  - New Unity plugin
+  - New Viewer application
+  - Support for 32/64-bit Windows
+  - Support for Unity 4 and 5
+  - Support for custom AR mode rendering in Unity
+  note: >-
+    Date is the S3 LastModified of the release-notes object. Requires Visual Studio 2013
+    32- and 64-bit redistributables.
+- product: zView
+  version: 2.0.0
+  date: null
+  url: https://s3.amazonaws.com/updates.zspace.com/relnotes/zview/releasenotes.html
+  breaking: true
+  type: major
+  highlights:
+  - zView can now be controlled from a zView-enabled application
+  - Previous versions of zView-enabled applications must be updated to function with zView 2.0
+  - Developer support using zView SDK or zView Unity Package
+products_with_release_notes:
+- Packager
+- Simulations
+- configcheck
+- cseries
+- curieselements
+- curieselements-content
+- cyberscience
+- cyberscience-content
+- datacollectionserviceclient
+- eduserver
+- euclidsshapes
+- euclidsshapes-content
+- franklinslab
+- franklinslab-content
+- human-anatomy-atlas
+- leopoly
+- newtonspark
+- newtonspark-content
+- sdk
+- studio
+- studio-content
+- system
+- vivedchemistry
+- vivedscience
+- zStandAloneDemo
+- zed
+- zone
+- zscore
+- zspaceexperience
+- zview
+gaps:
+- No dated, feed-backed changelog (no RSS/Atom/JSON) for any product.
+- The public release-notes surface has been frozen since 2019.
+- >-
+  Current release information is only in the support portal and the App Manager, neither
+  machine-readable.

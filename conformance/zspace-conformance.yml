@@ -1,0 +1,125 @@
+generated: '2026-09-05'
+method: probed
+source: >-
+  https://auth.zspace.com/auth/realms/master/.well-known/openid-configuration and live
+  HTTP probes of https://api.zspace.com/v2
+note: >-
+  Every entry below is asserted from a document that was fetched, or from a live response
+  that was observed. Nothing is inferred from marketing prose. Where a standard was probed
+  for and not found, it is recorded with conforms: false so the absence is data.
+conformance:
+- id: oidc
+  name: OpenID Connect Core 1.0
+  conforms: true
+  evidence: >-
+    https://auth.zspace.com/auth/realms/master/.well-known/openid-configuration returned
+    HTTP 200 application/json with issuer, authorization_endpoint, token_endpoint,
+    userinfo_endpoint and jwks_uri.
+- id: oidc-discovery
+  name: OpenID Connect Discovery 1.0
+  conforms: true
+  evidence: A conformant discovery document is served at the realm .well-known path (HTTP 200).
+- id: oauth2
+  name: OAuth 2.0 (RFC 6749)
+  conforms: true
+  evidence: >-
+    grant_types_supported advertises authorization_code, refresh_token,
+    client_credentials, implicit and password.
+- id: pkce
+  name: PKCE (RFC 7636)
+  conforms: true
+  evidence: 'code_challenge_methods_supported: [plain, S256] in the discovery document.'
+- id: rfc9126-par
+  name: OAuth 2.0 Pushed Authorization Requests (RFC 9126)
+  conforms: true
+  evidence: >-
+    pushed_authorization_request_endpoint and require_pushed_authorization_requests are
+    present in the discovery document.
+- id: rfc8628-device-grant
+  name: OAuth 2.0 Device Authorization Grant (RFC 8628)
+  conforms: true
+  evidence: >-
+    device_authorization_endpoint present and
+    urn:ietf:params:oauth:grant-type:device_code in grant_types_supported.
+- id: rfc8705-mtls
+  name: OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound Tokens (RFC 8705)
+  conforms: true
+  evidence: >-
+    tls_client_auth in token_endpoint_auth_methods_supported;
+    tls_client_certificate_bound_access_tokens and mtls_endpoint_aliases present.
+- id: rfc7591-dynamic-client-registration
+  name: OAuth 2.0 Dynamic Client Registration (RFC 7591)
+  conforms: true
+  evidence: registration_endpoint present in the discovery document.
+- id: rfc7662-introspection
+  name: OAuth 2.0 Token Introspection (RFC 7662)
+  conforms: true
+  evidence: introspection_endpoint present in the discovery document.
+- id: rfc7009-revocation
+  name: OAuth 2.0 Token Revocation (RFC 7009)
+  conforms: true
+  evidence: revocation_endpoint present in the discovery document.
+- id: ciba
+  name: OpenID Connect Client-Initiated Backchannel Authentication (CIBA)
+  conforms: true
+  evidence: >-
+    backchannel_authentication_endpoint present and urn:openid:params:grant-type:ciba in
+    grant_types_supported.
+- id: rfc7517-jwks
+  name: JSON Web Key Set (RFC 7517)
+  conforms: true
+  evidence: >-
+    https://auth.zspace.com/auth/realms/master/protocol/openid-connect/certs returned
+    HTTP 200 application/json.
+- id: rfc9457
+  name: Problem Details for HTTP APIs (RFC 9457)
+  conforms: false
+  evidence: >-
+    Live error bodies from https://api.zspace.com/v2 use the NestJS envelope
+    {"message":...,"error":...,"statusCode":...} with content-type application/json, not
+    application/problem+json. See errors/zspace-problem-types.yml.
+- id: openapi
+  name: OpenAPI Specification
+  conforms: false
+  evidence: >-
+    No OpenAPI is retrievable. /openapi.json, /openapi.yaml, /swagger.json, /api-docs,
+    /docs, /api-json, /docs-json and /redoc were probed on zspace.com,
+    developer.zspace.com and api.zspace.com (including under /v2). The only Swagger mount,
+    https://api.zspace.com/v2/api/docs, returns HTTP 302 to the Keycloak authorization
+    endpoint.
+- id: rfc9116-security-txt
+  name: security.txt (RFC 9116)
+  conforms: false
+  evidence: >-
+    Probed on every host. api.zspace.com and dev-community.zspace.com returned 404;
+    zspace.com, developer.zspace.com and login.zspace.com returned an SPA shell.
+- id: a2a-agent-card
+  name: A2A Agent Card
+  conforms: false
+  evidence: >-
+    /.well-known/agent-card.json and /.well-known/agent.json probed on every host; 404 on
+    the real hosts, SPA shell on the Angular hosts.
+domain_standards:
+  sector: education
+  probed:
+  - id: lti
+    name: 1EdTech Learning Tools Interoperability
+    conforms: false
+    evidence: >-
+      No LTI launch, deep-linking, or /lti route found on any zSpace host and no LTI claim
+      in the SDK reference or the developer portal application bundle.
+  - id: oneroster
+    name: 1EdTech OneRoster
+    conforms: false
+    evidence: No OneRoster endpoint or rostering API found on any probed host.
+  - id: caliper
+    name: 1EdTech Caliper Analytics
+    conforms: false
+    evidence: >-
+      A datacollectionserviceclient product exists in the updates.zspace.com release-notes
+      bucket, but no Caliper event or sensor contract is published.
+  note: >-
+    REWARD-ONLY. zSpace is recorded as not declaring an education interoperability
+    standard in any machine-readable contract. This is an honest negative from probing,
+    not a penalty, and it is the single clearest gap for an edtech vendor selling into
+    districts that already speak LTI and OneRoster.

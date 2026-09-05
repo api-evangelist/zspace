@@ -1,0 +1,44 @@
+generated: '2026-09-05'
+method: probed
+source: https://auth.zspace.com/auth/realms/master/.well-known/openid-configuration
+docs: null
+note: >-
+  scopes_supported read verbatim from the production Keycloak OIDC discovery document.
+  These are the Keycloak realm default client scopes; zSpace publishes no scope or
+  permission reference page, so no application-specific scopes (device, content, roster,
+  licensing) could be found. Descriptions below are the standard OIDC/Keycloak meanings of
+  each scope, not zSpace prose.
+issuer: https://auth.zspace.com/auth/realms/master
+scope_count: 9
+scopes:
+- name: openid
+  description: Required for OpenID Connect; requests an ID token.
+  standard: OpenID Connect Core 1.0
+- name: profile
+  description: Basic profile claims (name, given_name, family_name, preferred_username).
+  standard: OpenID Connect Core 1.0
+- name: email
+  description: The email and email_verified claims.
+  standard: OpenID Connect Core 1.0
+- name: address
+  description: The address claim.
+  standard: OpenID Connect Core 1.0
+- name: phone
+  description: The phone_number and phone_number_verified claims.
+  standard: OpenID Connect Core 1.0
+- name: offline_access
+  description: Requests a refresh token usable while the user is not present.
+  standard: OpenID Connect Core 1.0
+- name: roles
+  description: Keycloak realm and client role mappings in the token.
+  standard: Keycloak default client scope
+- name: web-origins
+  description: Keycloak scope that populates allowed CORS origins in the token.
+  standard: Keycloak default client scope
+- name: microprofile-jwt
+  description: MicroProfile JWT claims (upn, groups).
+  standard: Eclipse MicroProfile JWT RBAC
+gaps:
+- >-
+  No published scope reference. Every scope here is a Keycloak/OIDC default — zSpace has
+  not defined an application permission model that an integrator could request against.

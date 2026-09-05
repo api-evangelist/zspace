@@ -1,0 +1,34 @@
+generated: '2026-09-05'
+method: searched
+source: >-
+  https://zspace.com/ route table (extracted from the site's own Angular bundle
+  main.a5b9bb09bbfb4fef.js), https://zspace.com/purchase, https://zspace.com/funding,
+  https://zspace.com/contracts-rfps, https://zspace.com/contact-sales
+plan_count: 0
+plans: []
+note: >-
+  zSpace publishes no price list and no API plans. It sells AR/VR hardware, curriculum
+  content and services into K-12 and higher-education institutions through a quote and
+  purchase-order motion: the site's own routes are /purchase, /purchase/buy-in,
+  /funding/options, /funding/purchasing-options, /contracts-rfps, /contact-sales and
+  /deal-reg-access-request. There is no /pricing route in the application router, and no
+  developer tier, free tier, trial or metered API pricing exists anywhere on the
+  developer surface.
+commercial_model:
+  type: enterprise-quote
+  audience: K-12 districts, CTE programs, colleges and universities
+  motion:
+  - Contact sales / request a quote
+  - Contracts and RFPs
+  - Funding and purchasing-options guidance (grants, bonds, Perkins/CTE funding)
+  api_monetization: none
+  evidence:
+  - url: https://zspace.com/contact-sales
+    status: 200
+    note: SPA route; served HTML is the shared shell.
+  - url: https://zspace.com/contracts-rfps
+    status: 200
+    note: SPA route; served HTML is the shared shell.
+gaps:
+- No public pricing page for hardware, content or services.
+- No API pricing, no developer tier, no free tier.

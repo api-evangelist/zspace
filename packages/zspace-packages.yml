@@ -1,0 +1,109 @@
+generated: '2026-09-05'
+method: searched
+source: >-
+  npm registry search, PyPI, NuGet, Maven Central, crates.io, RubyGems, pkg.go.dev,
+  https://developer.zspace.com/downloads and https://s3.amazonaws.com/updates.zspace.com/relnotes/
+note: >-
+  zSpace publishes NO first-party client library to any public package registry. The
+  zSpace Core SDK and Unity plugin are distributed as downloadable installers from the
+  developer portal and the zSpace App Manager, not as an installable package. Registry
+  searches are recorded below as honest negatives.
+package_count: 0
+registry_searches:
+- registry: npm
+  query: zspace
+  url: https://registry.npmjs.org/-/v1/search?text=zspace
+  status: 200
+  first_party_hits: 0
+  note: >-
+    Only unrelated third-party packages returned. github.com/zspace publishes no npm
+    package.
+- registry: pypi
+  probed:
+  - name: zspace
+    status: 404
+  - name: zspace-sdk
+    status: 404
+  - name: pyzspace
+    status: 404
+  first_party_hits: 0
+- registry: nuget
+  query: zspace
+  url: https://azuresearch-usnc.nuget.org/query?q=zspace
+  status: 200
+  total_hits: 0
+  first_party_hits: 0
+- registry: maven-central
+  first_party_hits: 0
+  note: No org.zspace / com.zspace group found.
+- registry: crates.io
+  first_party_hits: 0
+- registry: rubygems
+  first_party_hits: 0
+- registry: pkg.go.dev
+  first_party_hits: 0
+packages:
+- name: zSpace Core SDK (native_sdk_4.0)
+  official: true
+  registry: installer
+  language: C
+  distribution: >-
+    Windows installer downloaded from the zSpace developer portal / zSpace App Manager.
+    Not published to any package registry, so there is no metadata endpoint to query.
+  version: 4.0.0
+  published: '2016-03-25'
+  version_source: >-
+    https://s3.amazonaws.com/updates.zspace.com/relnotes/sdk/4.0.0/releasenotes.html
+    (HTTP 200); the published reference is titled native_sdk_4.0 and the release-notes
+    object was last modified 2016-03-25.
+  docs: https://developer.zspace.com/assets/sdk-manual/index.html
+  reference: https://developer.zspace.com/assets/sdk-manual/modules.html
+  note: >-
+    ABANDONMENT SIGNAL. The only dated first-party SDK evidence zSpace publishes is a
+    4.0.0 release-notes document from 2016 covering Unity 4/5 and Visual Studio 2013
+    redistributables. The company shipped new hardware generations (Inspire, Imagine,
+    AIO Pro) since. Either the SDK genuinely has not been versioned publicly in that
+    window, or newer releases are published only behind the App Manager where a
+    prospective developer cannot see them.
+- name: zSpace Unity Plugin (zCore)
+  official: true
+  registry: installer
+  language: C#
+  distribution: >-
+    Unity package downloaded from the zSpace developer portal. Not published to the Unity
+    Asset Store scoped registry, npm, or OpenUPM.
+  version: 4.0.0
+  published: '2016-03-25'
+  version_source: >-
+    Bundled with the Core SDK 4.0.0 release notes
+    (https://s3.amazonaws.com/updates.zspace.com/relnotes/sdk/4.0.0/releasenotes.html),
+    which announce "New Unity plugin" and "Support for Unity 4 and 5".
+  docs: https://developer.zspace.com/docs/native-sdk/guide
+- name: zView SDK / zView Unity Package
+  official: true
+  registry: installer
+  language: C/C#
+  distribution: Delivered through the zSpace App Manager.
+  version: 4.6.0
+  published: null
+  version_source: >-
+    https://s3.amazonaws.com/updates.zspace.com/relnotes/zview/releasenotes.html
+    (HTTP 200) — latest section is "zView Version 4.6.0 Release Notes". The document
+    carries no release date, so published is null rather than guessed.
+  note: >-
+    zView shares a zSpace screen to a secondary monitor and, with a webcam, an augmented
+    view. Developer support is via the zView SDK / Unity package.
+source_repositories:
+  github_org: https://github.com/zspace
+  verified: true
+  public_repos: 13
+  note: >-
+    The verified zSpace, Inc. GitHub organization holds firmware and vendored upstream
+    forks only — Amlogic Linux kernel and device trees, an OpenCV 4.10.0 clone, a CUDA
+    12.6 copy, Android 7 cross compilers, a PIC16F1 USB bootloader and a Discourse
+    plugin. No SDK source, no client library, no API contract is published there.
+gaps:
+- No client library on any public package registry.
+- >-
+  No dated, versioned SDK release feed a developer can watch; the newest first-party SDK
+  release notes reachable without an account are from 2016.

@@ -1,0 +1,83 @@
+# zSpace
+
+> zSpace, Inc. (Nasdaq: ZSPC) builds AR/VR learning technology for K-12, career and
+> technical education, and higher education: glasses-free 3D laptops and all-in-one
+> displays paired with a stylus and head tracking, plus a catalog of curriculum-aligned
+> applications, models and simulations. Its developer surface is the zSpace Core SDK — a
+> native C API with a Unity plugin — not a public web API.
+
+generated: 2026-09-05
+method: generated
+source: apis.yml and the artifacts in this repository; zSpace publishes no llms.txt of its own.
+
+## What zSpace actually exposes to developers
+
+- **zSpace Core SDK (native_sdk_4.0)** — a native C API for driving a zSpace display.
+  Fourteen documented modules: General, Display, Stereo Buffer, Stereo Viewport,
+  Coordinate Space, Stereo Frustum, Tracker Device, Tracker Target, Target Button,
+  Target LED, Target Vibration, Target Tap, Tracker Event, Mouse Emulation.
+  This is a device/runtime SDK. It is not callable over a network and has no base URL.
+- **zSpace Unity Plugin (zCore)** — a Unity wrapper over the same surface.
+- **zView SDK / zView Unity Package** — screen and augmented-view sharing to a second display.
+- **Developer portal web API (v2)** — https://api.zspace.com/v2, a NestJS service behind
+  the developer portal. It is real and live but has no public contract.
+- **Keycloak OpenID Connect** — https://auth.zspace.com/auth/realms/master
+
+## Documentation
+
+- [zSpace Core SDK reference](https://developer.zspace.com/assets/sdk-manual/index.html): Doxygen-generated, static HTML, crawlable.
+- [SDK API modules index](https://developer.zspace.com/assets/sdk-manual/modules.html): the fourteen native modules.
+- [Native SDK guide](https://developer.zspace.com/docs/native-sdk/guide): JavaScript-rendered; served HTML is an empty shell.
+- [Developer portal](https://developer.zspace.com/): JavaScript-rendered Angular application.
+- [Developer forum](https://dev-community.zspace.com/): Discourse, server-rendered and crawlable.
+- [Support portal](https://support.zspace.com/s/): Salesforce Experience Cloud; every article URL returns the same SPA shell.
+
+## Identity and authentication
+
+- [OpenID Connect discovery](https://auth.zspace.com/auth/realms/master/.well-known/openid-configuration): HTTP 200, application/json.
+- [JWKS](https://auth.zspace.com/auth/realms/master/protocol/openid-connect/certs): HTTP 200, application/json.
+- Supports PKCE, Pushed Authorization Requests (RFC 9126), the device grant (RFC 8628),
+  mutual-TLS client authentication (RFC 8705), dynamic client registration (RFC 7591),
+  token introspection and revocation, and CIBA.
+- Scopes are the Keycloak/OIDC defaults only: openid, profile, email, address, phone,
+  offline_access, roles, web-origins, microprofile-jwt. No application permission model
+  is published.
+
+## Release notes
+
+- [Public release-notes bucket](https://s3.amazonaws.com/updates.zspace.com/relnotes/): 30 product trees, 39 documents. Last updated 2019-05-14.
+- [zSpace SDK 4.0.0 release notes](https://s3.amazonaws.com/updates.zspace.com/relnotes/sdk/4.0.0/releasenotes.html)
+- [zView release notes](https://s3.amazonaws.com/updates.zspace.com/relnotes/zview/releasenotes.html): current at 4.6.0.
+
+## Company
+
+- [Website](https://zspace.com/)
+- [Blog](https://blog.zspace.com/)
+- [Investor relations](https://investor.zspace.com/)
+- [GitHub organization](https://github.com/zspace): verified; 13 repositories, all firmware or vendored upstream forks.
+
+## What is NOT available
+
+An agent should not expect any of the following, all of which were probed for on
+2026-09-05 and are absent:
+
+- No OpenAPI, Swagger, GraphQL SDL, AsyncAPI, Protobuf or WSDL contract is retrievable.
+  A Swagger UI is mounted at https://api.zspace.com/v2/api/docs but returns HTTP 302 to
+  the Keycloak authorization endpoint.
+- No MCP server, hosted or local.
+- No A2A agent card at /.well-known/agent-card.json or /.well-known/agent.json.
+- No security.txt, no /.well-known/api-catalog, no ai-plugin.json.
+- No published rate limits and no RateLimit-* or Retry-After headers.
+- No idempotency mechanism and no documented reversal path or window for any write.
+- No status page. https://zspace.statuspage.io/ is unclaimed and serves Atlassian's own marketing page.
+- No public pricing; hardware and content are sold through quotes, RFPs and purchase orders.
+- No client library on npm, PyPI, NuGet, Maven Central, crates.io, RubyGems or pkg.go.dev.
+- No LTI, OneRoster or Caliper interoperability contract, despite the education market.
+
+## Caveat
+
+zspace.com, developer.zspace.com and login.zspace.com are client-side Angular
+applications whose origin answers HTTP 200 with an identical shell for every path,
+including paths that do not exist. A 200 from those hosts is not evidence that a document
+exists. The only machine-readable documents zSpace serves are the Keycloak OIDC metadata,
+the JWKS, and the static Doxygen SDK reference.
