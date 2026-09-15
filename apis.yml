@@ -1,18 +1,16 @@
 aid: zspace
 name: zSpace
-description: >-
-  zSpace, Inc. (Nasdaq: ZSPC) builds AR/VR learning technology for K-12, career and technical
-  education, and higher education — glasses-free 3D laptops and all-in-one displays (Inspire,
-  Imagine, AIO Pro) paired with a stylus, head tracking, and a catalog of curriculum-aligned
-  applications, models and simulations. Its developer surface is centered on the zSpace Core
-  SDK, a native C API plus a Unity plugin that gives applications access to the display's
-  stereo frustum, coordinate spaces, tracker devices and targets, stylus buttons, LED and
-  haptics. A first-party developer portal at developer.zspace.com fronts an authenticated
-  web API at api.zspace.com/v2 and a Keycloak OpenID Connect identity provider at
-  auth.zspace.com; product release notes for roughly thirty applications are published from
-  a public updates.zspace.com bucket. zSpace is a publicly traded company (Nasdaq: ZSPC)
-  headquartered in San Jose, California with more than 70 patents, and reports over 2,400
-  U.S. school, technical-center, community-college and university customers.
+description: 'zSpace, Inc. (Nasdaq: ZSPC) builds AR/VR learning technology for K-12, career and technical
+  education, and higher education — glasses-free 3D laptops and all-in-one displays (Inspire, Imagine,
+  AIO Pro) paired with a stylus, head tracking, and a catalog of curriculum-aligned applications, models
+  and simulations. Its developer surface is centered on the zSpace Core SDK, a native C API plus a Unity
+  plugin that gives applications access to the display''s stereo frustum, coordinate spaces, tracker devices
+  and targets, stylus buttons, LED and haptics. A first-party developer portal at developer.zspace.com
+  fronts an authenticated web API at api.zspace.com/v2 and a Keycloak OpenID Connect identity provider
+  at auth.zspace.com; product release notes for roughly thirty applications are published from a public
+  updates.zspace.com bucket. zSpace is a publicly traded company (Nasdaq: ZSPC) headquartered in San Jose,
+  California with more than 70 patents, and reports over 2,400 U.S. school, technical-center, community-college
+  and university customers.'
 url: https://raw.githubusercontent.com/api-evangelist/zspace/refs/heads/main/apis.yml
 image: https://cdn.zspace.com/website-images/zspace-logo.png
 x-type: company
@@ -32,15 +30,13 @@ tags:
 - Career and Technical Education
 - Developer SDK
 apis:
-- aid: zspace-core-sdk
+- aid: zspace:zspace-core-sdk
   name: zSpace Core SDK (Native C API)
-  description: >-
-    The zSpace Core SDK is a native C API (documented as native_sdk_4.0) that lets an
-    application drive a zSpace display: it loads the SDK runtime, detects connected
-    peripherals, and exposes fourteen API modules covering displays, stereo buffers and
-    viewports, coordinate spaces, the stereo frustum, tracker devices and tracker targets,
-    target buttons, LEDs, vibration and tap, tracker events, and mouse emulation. A Unity
-    plugin wraps the same surface. It is a device/runtime SDK, not a web service.
+  description: 'The zSpace Core SDK is a native C API (documented as native_sdk_4.0) that lets an application
+    drive a zSpace display: it loads the SDK runtime, detects connected peripherals, and exposes fourteen
+    API modules covering displays, stereo buffers and viewports, coordinate spaces, the stereo frustum,
+    tracker devices and tracker targets, target buttons, LEDs, vibration and tap, tracker events, and
+    mouse emulation. A Unity plugin wraps the same surface. It is a device/runtime SDK, not a web service.'
   image: https://cdn.zspace.com/website-images/zspace-logo.png
   humanURL: https://developer.zspace.com/docs/native-sdk/guide
   baseURL: https://developer.zspace.com/assets/sdk-manual/
@@ -57,19 +53,21 @@ apis:
     url: https://developer.zspace.com/assets/sdk-manual/modules.html
   - type: ChangeLog
     url: https://s3.amazonaws.com/updates.zspace.com/relnotes/sdk/4.0.0/releasenotes.html
-- aid: zspace-developer-api
+- aid: zspace:zspace-developer-api
   name: zSpace Developer Portal API (v2)
-  description: >-
-    The web API behind the zSpace developer portal and account surface, served from
-    api.zspace.com/v2 and named as apiUrlV2 in the portal's own published runtime
-    configuration. It is a Node/NestJS service exposing auth, cognito, devportal, gateway
-    and social route groups. A Swagger UI is mounted at /v2/api/docs but is protected by
-    the zSpace Keycloak OpenID Connect provider, so no machine-readable OpenAPI is
+  description: The web API behind the zSpace developer portal and account surface, served from api.zspace.com/v2
+    and named as apiUrlV2 in the portal's own published runtime configuration. It is a Node/NestJS service
+    exposing auth, cognito, devportal, gateway and social route groups. A Swagger UI is mounted at /v2/api/docs
+    but is protected by the zSpace Keycloak OpenID Connect provider, so no machine-readable OpenAPI is
     publicly retrievable.
   image: https://cdn.zspace.com/website-images/zspace-logo.png
   humanURL: https://developer.zspace.com/
   baseURL: https://api.zspace.com/v2
   tags:
+  - Developer Portal
+  - Authentication
+  - Account
+  tags_raw:
   - Developer Portal
   - Authentication
   - Accounts
